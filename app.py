@@ -41,6 +41,9 @@ class Skills(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     level = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String(500), nullable=True)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
