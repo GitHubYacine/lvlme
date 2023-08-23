@@ -10,7 +10,8 @@ db = SQLAlchemy(app)
 @app.route('/')
 def first_page():
     skills = Skills.query.all()
-    return render_template("front.html", skills=skills)
+    return render_template("front.html", skills=skills, totalLevel = sum(skills.level)) # <- Här var vi senast och ska lägga till en Total Level knapp på sidan
+    
 
 @app.route('/skills', methods=['GET'])
 def get_skills():
@@ -37,6 +38,7 @@ def update_skill_down():
     skills = Skills.query.all()
     return render_template("front.html", skills=skills)
 
+
 class Skills(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -46,4 +48,3 @@ class Skills(db.Model):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
