@@ -1,4 +1,4 @@
-from app import app, Skills, db
+from app import app, Skill, db, Challenge
 
 sample_skills = [
         {"name": "Strength", "level": 1, "description": "Strength represents your physical power."},
@@ -15,8 +15,19 @@ sample_skills = [
         {"name": "Coding", "level": 1, "description": "Coding represents the practice of writing computer programs using programming languages."},
     ]
 
+challenges_for_skills = [
+    {"name": "Challenge 1 for Strength", "description": "Do a push-up.", "experience": 50, "skill_id": 1},
+    {"name": "Challenge 2 for Strength", "description": "Do a squat.", "experience": 50, "skill_id": 1},
+    
+    
+]
+
 with app.app_context():
-    for skill_data in sample_skills:
-        skills = Skills(name=skill_data["name"], level=skill_data["level"], description=skill_data["description"])
-        db.session.add(skills)
+    if True == False:
+        for skill_data in sample_skills:
+            skills = Skill(name=skill_data["name"], level=skill_data["level"], description=skill_data["description"])
+            db.session.add(skills)
+    for challenge in challenges_for_skills:
+        challenges = Challenge(name=challenge["name"], description=challenge["description"], experience=challenge["experience"], skill_id=challenge["skill_id"])
+        db.session.add(challenges)
     db.session.commit()
