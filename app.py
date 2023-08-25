@@ -9,8 +9,6 @@ db = SQLAlchemy(app)
 @app.route('/')
 def first_page():
     skills = Skill.query.all()
-    ##for varjeskill in skills:
-        ##challenge = db.query(challenge) Här slutade vi igår, vi ska försöka hämta varje skill med tillhörande challenge matchande igenom deras keys, så strength skill har key 1 och när challenge linkas ihop genom foregin key till 1 så tillhör challengen den skillen :)
     return render_template("front.html", skills=skills, totalLevel = sum(skill.level for skill in skills))
     
 @app.route('/skills', methods=['GET'])
@@ -43,13 +41,14 @@ class Skill(db.Model):
     name = db.Column(db.String(50), nullable=False)
     level = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(500), nullable=True)
-    
+    challenges = db.relationship('Challenge', backref='skill', lazy=True)
+        
 class Challenge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
     experience = db.Column(db.Float(100), nullable=False)
-    skill_id = db.Column(db.Integer, db.ForeignKey("skill.id"))
+    skill_id = db.Column(db.Integer, db.ForeignKey("skill.id"), nullable=False)
 
 if __name__ == '__main__':
     with app.app_context(): db.create_all()
