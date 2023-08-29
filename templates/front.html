@@ -38,21 +38,30 @@
                 <div class="collapse" id="challenges-{{ skill.id }}">
                     <div class="challenges">
                         {% for challenge in skill.challenges %}
-                            <p>{{ challenge.name }}: {{ challenge.description }}</p>
+                            <form method="post" action="{{ url_for('complete_challenge', challenge_id=challenge.id) }}">
+                                <input type="checkbox" id="challenge-{{ challenge.id }}" name="completed" value="true">
+                                <label for="challenge-{{ challenge.id }}">{{ challenge.name }}: {{ challenge.description }}</label>
+                                <button type="submit">Complete</button>
+                            </form>
                         {% endfor %}
                     </div>
                 </div>
+            </div>  
+            <div class="progress" style="width: 30%;">
+                <div class="progress-bar" role="progressbar" style="width: {{ skill.experience }}%;" aria-valuenow="{{ skill.experience }}" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             {% endfor %}
         {% endif %}
     </div>
-    {{ totalLevel }}
+   <p> Total level: {{ totalLevel }} </p>
     <script>
         // Initialize Bootstrap tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('.skill-name'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
+        document.addEventListener("DOMContentLoaded", function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
     </script>
 </body>
 </html>
