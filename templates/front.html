@@ -24,7 +24,7 @@
                 <div class="col-md-4">
                     <a href="#challenges-{{ skill.id }}" class="skill-name" data-bs-toggle="collapse" data-bs-placement="top" title="{{ skill.description }}">{{ skill.name }}</a>
                 </div>
-                <div class="col-md-4">{{ skill.level }}</div>
+                <div class="col-md-4">{{ skill.level }}</div> 
                 <div class="col-md-4">
                     <form method="post" action="{{ url_for('update_skill_up') }}" style="display: inline;">
                         <input type="hidden" name="skill" value={{ skill.name }} />
@@ -47,8 +47,8 @@
                     </div>
                 </div>
             </div>  
-            <div class="progress" style="width: 30%;">
-                <div class="progress-bar" role="progressbar" style="width: {{ skill.experience }}%;" aria-valuenow="{{ skill.experience }}" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress" style="width: 30%;"> 
+                <div class="progress-bar" role="progressbar" style="width: {{ skill.experience / skill.required_experience * 100 }}%;" aria-valuenow="{{ skill.experience }}" aria-valuemin="0" aria-valuemax="100"> {{ (skill.experience)|round(2) }} / {{ skill.required_experience }} </div>
             </div>
             {% endfor %}
         {% endif %}

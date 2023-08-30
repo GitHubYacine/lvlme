@@ -9,7 +9,10 @@ db = SQLAlchemy(app)
 @app.route('/')
 def first_page():
     skills = Skill.query.all()
-    return render_template("front.html", skills=skills, totalLevel = sum(skill.level for skill in skills))
+    for skill in skills:
+        skill.required_experience = 100 * pow(1.1, skill.level-1)
+        skill.required_experience = round(skill.required_experience, 2)
+    return render_template("front.html", skills=skills, totalLevel=sum(skill.level for skill in skills))
     
 @app.route('/skills', methods=['GET'])
 def get_skills():
@@ -64,12 +67,15 @@ def update_experience(challenge_id):
     experience_points = challenge.experience
     corresponding_skill = challenge.skill
     corresponding_skill.experience += int(experience_points)
-    if corresponding_skill.experience >= 100:
+    base_experience = 100
+    newexperience = base_experience * pow(1.1, corresponding_skill.level-1)
+    newexperience = round(newexperience, 2)
+    if corresponding_skill.experience >= newexperience:
         corresponding_skill.level += 1
-        corresponding_skill.experience -= 100
-    
+        corresponding_skill.experience -= newexperience
+
+        
     db.session.commit()
-    
 if __name__ == '__main__':
     with app.app_context(): db.create_all()
     app.run(debug=True)
