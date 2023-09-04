@@ -27,7 +27,7 @@ def update_skill_up():
         skill.level += 1
         db.session.commit()
     skills = Skill.query.all()
-    return render_template("front.html", skills=skills)
+    return redirect(url_for('first_page'))
 
 @app.route('/update_skill_down', methods=['POST'])
 def update_skill_down():
@@ -37,7 +37,13 @@ def update_skill_down():
         skill.level -= 1
         db.session.commit()
     skills = Skill.query.all()
-    return render_template("front.html", skills=skills)
+    return redirect(url_for('first_page'))
+
+@app.route('/update_experience/<int:skill_id>', methods=['POST'])
+def update_experience_route(skill_id):
+    minutes_spent = request.form.get('minutes_spent')
+    update_experience(skill_id, int(minutes_spent))
+    return redirect(url_for('first_page'))
 
 @app.route('/complete_challenge/<int:challenge_id>', methods=['POST'])
 def complete_challenge(challenge_id):
@@ -61,11 +67,13 @@ class Challenge(db.Model):
     description = db.Column(db.String(1000), nullable=False)
     experience = db.Column(db.Float(100), nullable=False)
     skill_id = db.Column(db.Integer, db.ForeignKey("skill.id"), nullable=False)
-    
-def update_experience(challenge_id):
-    challenge = Challenge.query.get(challenge_id)
-    experience_points = challenge.experience
-    corresponding_skill = challenge.skill
+
+def update_experience(skill_id, minutes_spent):
+    skill = Skill.query.get(skill_id)
+    skill_level_multiplier = 1.0 
+    current_skill_level = skill.level
+    experience_points = ((minutes_spent) * (skill_level_multiplier * current_skill_level))
+    corresponding_skill = skill
     corresponding_skill.experience += int(experience_points)
     base_experience = 100
     newexperience = base_experience * pow(1.1, corresponding_skill.level-1)
@@ -73,9 +81,11 @@ def update_experience(challenge_id):
     if corresponding_skill.experience >= newexperience:
         corresponding_skill.level += 1
         corresponding_skill.experience -= newexperience
-
-        
     db.session.commit()
+    
+
+
+
 if __name__ == '__main__':
     with app.app_context(): db.create_all()
     app.run(debug=True)

@@ -35,6 +35,10 @@
                         <button type="submit" class="btn btn-primary">LEVEL DOWN</button>
                     </form>
                 </div>
+                <form method="post" action="{{ url_for('update_experience_route', skill_id=skill.id) }}">
+                    <input type="number" name="minutes_spent" placeholder="Minutes spent">
+                    <button type="submit">Update Experience</button>
+                </form>
                 <div class="collapse" id="challenges-{{ skill.id }}">
                     <div class="challenges">
                         {% for challenge in skill.challenges %}
