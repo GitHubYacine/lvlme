@@ -42,11 +42,12 @@ def update_skill_down():
 @app.route('/update_experience/<int:skill_id>', methods=['POST'])
 def update_experience_route(skill_id):
     minutes_spent = request.form.get('minutes_spent')
-    if type(minutes_spent) is int:
+    if minutes_spent.isdigit():
         update_experience(skill_id, int(minutes_spent))
-    check_if_valid = update_experience
-    return redirect(url_for('first_page'))
-
+        return redirect(url_for('first_page'))
+    else:
+        return "Please enter a valid number for minutes spent"
+    
 @app.route('/complete_challenge/<int:challenge_id>', methods=['POST'])
 def complete_challenge(challenge_id):
     completed = request.form.get('completed') == 'true'

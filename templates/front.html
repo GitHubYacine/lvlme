@@ -20,7 +20,7 @@
         <h1>All skills</h1>
         {% if skills|length > 0 %}
             {% for skill in skills %}
-            <div class="row mb-12">
+            <div class="row mb-12" data-id="{{ skill.id }}">
                 <div class="col-md-4">
                     <a href="#challenges-{{ skill.id }}" class="skill-name" data-bs-toggle="collapse" data-bs-placement="top" title="{{ skill.description }}">{{ skill.name }}</a>
                 </div>
@@ -36,13 +36,13 @@
                     </form>
                 </div>
                 <form method="post" action="{{ url_for('update_experience_route', skill_id=skill.id) }}">
-                    <input type="number" id="minutesInput" name="minutes_spent" placeholder="Minutes spent">
-                    <button type="button" id="submitButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                    <input type="number" name="minutes_spent" id="minutes_spent-{{ skill.id }}" placeholder="Enter minutes spent">
+                    <button type="button" id="submitButton-{{ skill.id }}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal-{{ skill.id }}">                   
                         ✔️
                     </button>                 
                 </form>
             
-                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal fade" id="confirmModal-{{ skill.id }}" tabindex="-1" aria-labelledby="confirmModalLabel-{{ skill.id }}" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -51,7 +51,7 @@
                             </div>
                             <form method="post" action="{{ url_for('update_experience_route', skill_id=skill.id) }}">
                                 <div class="modal-body">
-                                    <p>"By pressing confirm, I promise that I've actually spent this time on the task. I understand that cheating won't help me pass future challenges."</p>
+                                    <p>By pressing confirm, I promise that I've actually spent this time on the task. I understand that cheating won't help me pass future challenges.</p>
                                     <input type="number" name="minutes_spent" id="minutes_spent" placeholder="Enter minutes spent">
                                 </div>
                                 <div class="modal-footer">
@@ -91,18 +91,56 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const submitButton = document.getElementById("submitButton");
-            const minutesInput = document.getElementById("minutesInput");
-    
-            submitButton.addEventListener("click", function() {
-                const minutes = minutesInput.value;
+            const skills = document.querySelectorAll('.row.mb-12');
+            
+            skills.forEach((skill) => {
+                const skillId = skill.getAttribute('data-id');
+                const submitButton = skill.querySelector(`#submitButton-${skillId}`);
+                const minutesInput = skill.querySelector(`#minutes_spent-${skillId}`);
+                const confirmModal = skill.querySelector(`#confirmModal-${skillId}`);
+                const modalContent = confirmModal.querySelector('.modal-content');
+                const myModal = new bootstrap.Modal(confirmModal, {});
+                let allowClose = true;
+                
+                submitButton.addEventListener("click", function() {
+                    myModal.show();
+                });
+                
+                confirmModal.addEventListener('show.bs.modal', function () {
+                    const minutes = minutesInput.value;
+                    confirmModal.querySelector(`#minutes_spent`).value = minutes;
+                });
+                
+                confirmModal.addEventListener('hidden.bs.modal', function () {
+                    if (allowClose) return;
+                    const minutes = minutesInput.value;
+                    if (!Number.isInteger(Number(minutes)) || minutes === "") {
+                        modalContent.classList.add('shake');
+                        setTimeout(() => modalContent.classList.remove('shake'), 1000);
+                        myModal.show();
+                    }
+                });
+        
+                const form = confirmModal.querySelector('form');
+                form.addEventListener('submit', function(e) {
+                    const minutes = minutesInput.value;
+                    if (!Number.isInteger(Number(minutes)) || minutes === "") {
+                        e.preventDefault();
+                        allowClose = false;
+                        modalContent.classList.add('shake');
+                        setTimeout(() => modalContent.classList.remove('shake'), 1000);
+                        myModal.show();
+                    } else {
+                        allowClose = true;
+                    }
+                });
 
-                if (!Number.isInteger(Number(minutes)) || minutes === "") {
-                    alert("Please enter a valid number for minutes spent.");
-                } else {
-                    var myModal = new bootstrap.Modal(document.getElementById('confirmModal'), {});
-myModal.show();
-                }
+                const closeModalButtons = confirmModal.querySelectorAll('.btn-close, .btn-secondary');
+                closeModalButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        allowClose = true;
+                    });
+                });
             });
         });
     </script>
