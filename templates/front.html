@@ -36,9 +36,32 @@
                     </form>
                 </div>
                 <form method="post" action="{{ url_for('update_experience_route', skill_id=skill.id) }}">
-                    <input type="number" name="minutes_spent" placeholder="Minutes spent">
-                    <button type="submit">Update Experience</button>
+                    <input type="number" id="minutesInput" name="minutes_spent" placeholder="Minutes spent">
+                    <button type="button" id="submitButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                        ✔️
+                    </button>                 
                 </form>
+            
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirm Update</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="post" action="{{ url_for('update_experience_route', skill_id=skill.id) }}">
+                                <div class="modal-body">
+                                    <p>"By pressing confirm, I promise that I've actually spent this time on the task. I understand that cheating won't help me pass future challenges."</p>
+                                    <input type="number" name="minutes_spent" id="minutes_spent" placeholder="Enter minutes spent">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="collapse" id="challenges-{{ skill.id }}">
                     <div class="challenges">
                         {% for challenge in skill.challenges %}
@@ -59,11 +82,27 @@
     </div>
    <p> Total level: {{ totalLevel }} </p>
     <script>
-        // Initialize Bootstrap tooltips
         document.addEventListener("DOMContentLoaded", function() {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const submitButton = document.getElementById("submitButton");
+            const minutesInput = document.getElementById("minutesInput");
+    
+            submitButton.addEventListener("click", function() {
+                const minutes = minutesInput.value;
+
+                if (!Number.isInteger(Number(minutes)) || minutes === "") {
+                    alert("Please enter a valid number for minutes spent.");
+                } else {
+                    var myModal = new bootstrap.Modal(document.getElementById('confirmModal'), {});
+myModal.show();
+                }
             });
         });
     </script>
