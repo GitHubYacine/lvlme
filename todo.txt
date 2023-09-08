@@ -1,1 +1,15 @@
-Ena delen är komma på "challenges" för att levla > 99
+Plan:
+Week 1: Focus on the admin interface. This will help you easily manage skills and challenges.
+Week 2: Work on the skill pop-up and roadmap. This is crucial for user engagement.
+Week 3: Implement the challenge tasks and the 60% completion requirement.
+Week 4: Create the user onboarding process with questions to tailor the user experience.
+Week 5: Start thinking about the algorithm for tailored roadmaps, interconnected skills, and guidance for beginners.
+
+Admin Interface: A simple admin page where you can add/update skills and challenges. This will make your life easier down the line.
+Skill Pop-up with Roadmap: When a user clicks on a skill, a pop-up should appear that describes the skill and shows a roadmap to level 99. It should only show challenges that are relevant to the user's current level.
+Challenge Tasks: Each challenge will have multiple tasks, and the user needs to complete at least 60% of them to pass. We'll have to think about how to verify this.
+User Onboarding: Ask users questions when they first sign up to tailor their experience.
+Tailored Roadmaps: An algorithm that customizes roadmaps and challenges based on the user's answers during onboarding.
+Interconnected Skills: Make every skill useful for future quests or challenges, emphasizing the need for a balanced skill set.
+Guidance for Beginners: If a user has zero prior knowledge in a skill, provide a beginner's guide.
+Sophia Tamagotchis: These would be little digital pets that can assist and guide each user. They can be in the game, browser, or app. They'll have a name and can be customized.
