@@ -14,11 +14,17 @@
         <input type="submit" value="Add Skill">
     </form>
     <form action="/admin/delete_skill" method="post" style="display:inline;">
-    <ul id="skill_list">
-        {% for skill in skills %}
-            <li>{{ skill.name }} <a href="/admin/edit_skill/{{ skill.id }}">Edit</a> | <a href="/admin/delete_skill/{{ skill.id }}">Delete</a></li>
-        {% endfor %}
-    </ul>  
+        <ul id="skill_list">
+            {% for skill in skills %}
+                <li>
+                    {{ skill.name }} 
+                    <a href="/admin/edit_skill/{{ skill.id }}">Edit</a> | 
+                    <form action="/admin/delete_skill/{{ skill.id }}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
 </form>  
 </body>
 </html>
