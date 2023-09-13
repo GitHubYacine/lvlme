@@ -1,0 +1,24 @@
+<!-- templates/admin/manage_skills.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Skills</title>
+</head>
+<body>
+    <h2>Manage Skills</h2>
+    <form action="/admin/add_skill" method="post">
+        <label for="skill_name">Skill Name:</label>
+        <input type="text" id="skill_name" name="skill_name" required><br><br>
+        <label for="description">Description:</label>
+        <textarea type="text" id="description_for_skill" name="description_for_skill" required></textarea><br><br>
+        <input type="submit" value="Add Skill">
+    </form>
+    <form action="/admin/delete_skill" method="post" style="display:inline;">
+    <ul id="skill_list">
+        {% for skill in skills %}
+            <li>{{ skill.name }} <a href="/admin/edit_skill/{{ skill.id }}">Edit</a> | <a href="/admin/delete_skill/{{ skill.id }}">Delete</a></li>
+        {% endfor %}
+    </ul>  
+</form>  
+</body>
+</html>
