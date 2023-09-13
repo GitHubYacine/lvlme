@@ -5,6 +5,4 @@ from routes.admin_routes import admin_bp
 
 def from_blueprint_to_app(app):
     app.register_blueprint(user_bp)
-    app.register_blueprint(admin_bp)
-    
-    
+    app.register_blueprint(admin_bp, url_prefix='/admin')
