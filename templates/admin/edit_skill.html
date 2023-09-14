@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>Edit Skill</title>
+</head>
+<body>
+    <h2>Edit Skill</h2>
+    <form action="/admin/edit_skill/{{ skill.id }}" method="post" enctype="multipart/form-data">
+        <label for="new_name">New Skill Name:</label>
+        <input type="text" id="new_name" name="new_name" value="{{ skill.name }}"><br><br>
+
+        <label for="new_description">New Description:</label>
+        <textarea id="new_description" name="new_description">{{ skill.description }}</textarea><br><br>
+        <label for="image">Skill Image:</label>
+        <input type="file" id="image" name="image"><br><br>
+
+        <input type="submit" value="Update Skill">
+    </form>
+</body>
+</html>

@@ -7,6 +7,7 @@ class Skill(db.Model):
     experience = db.Column(db.Float, default=0)
     description = db.Column(db.String(500), nullable=True)
     challenges = db.relationship('Challenge', backref='skill', lazy=True)
+    skill_image = db.Column(db.String(255), nullable=True)
         
 class Challenge(db.Model):
     id = db.Column(db.Integer, primary_key=True)

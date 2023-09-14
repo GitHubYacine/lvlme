@@ -1,6 +1,8 @@
+import os
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from models.db_models import Skill
 from models.database import db
+from werkzeug.utils import secure_filename
 
 
 admin_bp = Blueprint("admin", __name__)
@@ -47,6 +49,41 @@ def remove_skill(skill_id):
     skill_to_remove = Skill.query.get(skill_id)
     if skill_to_remove:
         db.session.delete(skill_to_remove)
+        db.session.commit()
+        return redirect(url_for('admin.manage_skills'))
+    else:
+        return "Skill not found", 404
+    
+@admin_bp.route('/edit_skill/<int:skill_id>', methods=['GET'])
+def show_edit_skill_form(skill_id):
+    skill_to_edit = Skill.query.get(skill_id)
+    if skill_to_edit:
+        return render_template('admin/edit_skill.html', skill=skill_to_edit)
+    else:
+        return "Skill not found", 404
+    
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@admin_bp.route('edit_skill/<int:skill_id>', methods=['POST'])
+def edit_skill(skill_id):
+    skill_to_edit = Skill.query.get(skill_id)
+    if skill_to_edit:
+        new_name = request.form.get('new_name')
+        new_description = request.form.get('new_description')
+        if new_name:
+            skill_to_edit.name = new_name
+        if new_description:
+            skill_to_edit.description = new_description
+        image = request.files['image']
+        if image:
+            filename = secure_filename(image.filename)
+            skill_image = os.path.join('./upload_folder_for_images', filename)
+            image.save(skill_image)
+            skill_to_edit.skill_image = skill_image
         db.session.commit()
         return redirect(url_for('admin.manage_skills'))
     else:
