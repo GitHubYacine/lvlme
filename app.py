@@ -5,6 +5,8 @@ from routes.__init__ import from_blueprint_to_app
 from models.database import db
 
 app = Flask(__name__)
+UPLOAD_FOLDER = "./upload_folder_for_images"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///skills.db'
 db.init_app(app)
 

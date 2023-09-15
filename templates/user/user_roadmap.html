@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ skill.name }} Roadmap</title>
+    <style>
+        /* Add some basic styling */
+        .roadmap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .step {
+            border: 2px solid #ccc;
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+            text-align: center;
+        }
+        .step:hover {
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ skill.name }} Roadmap</h1>
+    <div class="roadmap">
+        {% for step in roadmap.steps %}
+            <div class="step">
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.description }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

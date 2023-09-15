@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import Flask, jsonify, request, render_template, redirect, url_for
-from models.db_models import Skill, Challenge
+from models.db_models import Skill, Challenge, Roadmap
 from routes.utilities import update_experience
 from models.database import db
 
@@ -55,3 +55,15 @@ def complete_challenge(challenge_id):
     if challenge and completed:
         update_experience(challenge_id)
     return redirect(url_for('User.first_page'))
+
+@user_bp.route('/show_roadmap/<int:skill_id>', methods=['GET'])
+def show_roadmap(skill_id):
+    skill = Skill.query.get(skill_id)
+    if skill:
+        roadmap = Roadmap.query.get(skill_id)
+        if roadmap:
+            return render_template("user/user_roadmap.html", roadmap=roadmap, skill=skill)
+        else:
+            return "No roadmap found for this skill, you need to create a roadmap for said skill Yacine, do not panic.", 404
+    else:
+        return "No skill was found", 404 

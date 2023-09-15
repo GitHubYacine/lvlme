@@ -23,7 +23,7 @@
             {% for skill in skills %}
             <div class="row mb-12" data-id="{{ skill.id }}">
                 <div class="col-md-4">
-                    <a href="#challenges-{{ skill.id }}" class="skill-name" data-bs-toggle="collapse" data-bs-placement="top" title="{{ skill.description }}">{{ skill.name }}</a>
+                <a href="{{ url_for('User.show_roadmap', skill_id=skill.id) }}" class="skill-name" data-bs-placement="top" title="{{ skill.description }}">{{ skill.name }}</a>
                 </div>
                 <div class="col-md-4">{{ skill.level }}</div> 
                 <div class="col-md-4">
