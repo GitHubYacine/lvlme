@@ -24,10 +24,10 @@
 <body>
     <h1>{{ skill.name }} Roadmap</h1>
     <div class="roadmap">
-        {% for step in roadmap.steps %}
+        {% for challenge in challenges %}
             <div class="step">
-                <h3>{{ step.title }}</h3>
-                <p>{{ step.description }}</p>
+                <p>{{ challenge.description }}</p>
+                <p>{{ challenge.requiredLevel}}</p>
             </div>
         {% endfor %}
     </div>
