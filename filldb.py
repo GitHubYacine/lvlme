@@ -1,5 +1,5 @@
 from app import app, db, Challenge
-from models.db_models import Skill, Roadmap
+from models.db_models import Skill
 
 sample_skills = [
         {"name": "Strength", "level": 1, "experience": 0, "description": "Strength represents your physical power.", "skill_image": ""},
@@ -18,15 +18,16 @@ sample_skills = [
 
 challenges_for_skills = [
     {"name": "Challenge 1 for Strength", "description": "Do a push-up.", "requiredLevel": 10, "skill_id": 1},
-    {"name": "Challenge 2 for Strength", "description": "Do a squat.", "requiredLevel": 10, "skill_id": 1},
-    {"name": "Challenge 1 for Strength", "description": "Do a sit-up.", "requiredLevel": 10, "skill_id": 1},    
+    {"name": "Challenge 2 for Strength", "description": "Do a squat.", "requiredLevel": 20, "skill_id": 1},
+    {"name": "Challenge 3 for Strength", "description": "Do a sit-up.", "requiredLevel": 30, "skill_id": 1},
+    {"name": "Challenge 4 for Strength", "description": "Do a push-up.", "requiredLevel": 40, "skill_id": 1},
+    {"name": "Challenge 5 for Strength", "description": "Do a squat.", "requiredLevel": 50, "skill_id": 1},
+    {"name": "Challenge 6 for Strength", "description": "Do a sit-up.", "requiredLevel": 60, "skill_id": 1},
+    {"name": "Challenge 7 for Strength", "description": "Do a push-up.", "requiredLevel": 70, "skill_id": 1},
+    {"name": "Challenge 8 for Strength", "description": "Do a squat.", "requiredLevel": 80, "skill_id": 1},
+    {"name": "Challenge 9 for Strength", "description": "Do a sit-up.", "requiredLevel": 90, "skill_id": 1},  
 ]
 
-roadmap_for_skills = [
-    {"road": "Step 1, Step 2, Step 3", "skill_id": 1},
-    {"road": "Step A, Step B, Step C", "skill_id": 2},
-    {"road": "Step F, Step G, Step H", "skill_id": 3},
-]
 
 with app.app_context():
     db.create_all()
@@ -38,8 +39,4 @@ with app.app_context():
         for challenge in challenges_for_skills:
             challenges = Challenge(name=challenge["name"], description=challenge["description"], requiredLevel=challenge["requiredLevel"], skill_id=challenge["skill_id"])
             db.session.add(challenges)
-    if True == True:
-        for roadmap_data in roadmap_for_skills:
-            roadmap = Roadmap(road=roadmap_data["road"], skill_id=roadmap_data["skill_id"])
-            db.session.add(roadmap)
     db.session.commit()

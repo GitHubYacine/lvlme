@@ -19,17 +19,25 @@
         .step:hover {
             border-color: #007bff;
         }
+        .passed { 
+            opacity: 0.3 
+        }
     </style>
 </head>
 <body>
     <h1>{{ skill.name }} Roadmap</h1>
     <div class="roadmap">
-        {% for challenge in challenges %}
-            <div class="step">
-                <p>{{ challenge.description }}</p>
-                <p>{{ challenge.requiredLevel}}</p>
-            </div>
-        {% endfor %}
+        {% for level in range(1, 100) %}
+        <div class="step {% if skill.level >= level %} passed {% endif %}">
+            <h3>{{level}}</h3>
+                {% for challenge in challenges %}
+                    {% if level == challenge.requiredLevel %}
+                        <p>{{ challenge.description }}</p>
+                        <p>{{ challenge.requiredLevel}}</p>
+                    {% endif %}
+            {% endfor %}
+        </div>
+        {%endfor%}
     </div>
 </body>
 </html>
